@@ -12,6 +12,9 @@ class City:
 
     def __str__(self):
         return f"{self.name}, lat: {self.lat}, lon: {self.lon}"
+    
+    def __repr__(self):
+        return f"{self.name}, lat: {self.lat}, lon: {self.lon}"
 
 
 # We have a collection of US cities with population over 750,000 stored in the
@@ -77,30 +80,26 @@ for c in cities:
 # Tucson: (32.1558,-110.8777)
 # Salt Lake City: (40.7774,-111.9301)
 
-# TODO Get latitude and longitude values from the user
 print(f"\nCITY SEARCH by coords\n")
-coords_1 = input("Enter lat1, lon1: ").split(',')
-coords_2 = input("Enter lat2, lon2: ").split(',')
-print(f"\n")
 
-coords = coords_1 + coords_2
-coords = [float(coord) for coord in coords]
-coords.sort()
-lon2, lon1, lat2, lat1 = coords
+lat1, lon1 = input("Enter lat1, lon1: ").split(',')
+lat2, lon2 = input("Enter lat2, lon2: ").split(',')
 
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
-  # within will hold the cities that fall within the specified region
+    # within will hold the cities that fall within the specified region
     within = []
 
-    # TODO Ensure that the lat and lon valuse are all floats
-    # Go through each city and check to see if it falls within
-    # the specified coordinates.
+    max_lat = max(float(lat1), float(lat2))
+    max_lon = max(float(lon1), float(lon2))
+    min_lat = min(float(lat1), float(lat2))
+    min_lon = min(float(lon1), float(lon2))
+
     for city in cities:
-        if (city.lat < lat1 and city.lat > lat2) and (city.lon < lon1 and city.lon > lon2):
+        if (min_lat <= city.lat <= max_lat and min_lon <= city.lon <= max_lon):
             within.append(city)
-            print(f"{city.name}: ({city.lat},{city.lon})")
+
     return within
 
-
-cityreader_stretch(lat1, lon1, lat2, lon2, cities)
+for city in (cityreader_stretch(lat1, lon1, lat2, lon2, cities)):
+    print(city)
